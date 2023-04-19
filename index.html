@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script defer type="module">
+      import { apply, CustomAttr } from "./index.js";
+      const customAttributeRegistry = apply(document);
+
+      class MyAttr extends CustomAttr {
+        constructor() {
+          super();
+          console.log("I got constructed");
+        }
+        connectedCallback() {
+          console.log("I'm connected");
+        }
+        disconnectedCallback() {
+          console.log("I'm disconnected");
+        }
+      }
+
+      customAttributeRegistry.define("my-attr", MyAttr);
+
+      const div = document.createElement("div");
+      div.setAttribute("my-attr", "foo");
+      div.attachShadow({ mode: "open" });
+      console.log("--");
+      const shadowDiv = document.createElement("div");
+      div.shadowRoot.setAttribute("my-attr", "foo");
+    </script>
+  </head>
+  <body>
+    <div my-attr></div>
+  </body>
+</html>
